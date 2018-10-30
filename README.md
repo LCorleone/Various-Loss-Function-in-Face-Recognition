@@ -23,6 +23,8 @@ loss_name = 'AM-softmax'
 ```
 
 ## Mnist Visualization
+# original softmax
+![original-softmax](https://github.com/LCorleone/Various_softmax_by_Keras/tree/master/gif/softmax.gif)
 
 ## To do
 
