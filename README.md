@@ -1,6 +1,6 @@
 Various_softmax_by_Keras
 ======
-Keras implementation of various softmax function  
+Keras implementation of various loss functions in face recognition and visualization on Mnist  
 
 ****
 	
@@ -37,6 +37,7 @@ loss_name = 'AM-softmax'
 - [x] center loss
 - [x] A-softmax
 - [x] AM-softmax
+- [ ] L-GM loss
 
 
 ## Reference
