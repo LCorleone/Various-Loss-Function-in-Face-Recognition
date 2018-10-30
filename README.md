@@ -37,8 +37,7 @@ loss_name = 'AM-softmax'
 - [x] center loss
 - [x] A-softmax
 - [x] AM-softmax
-- [ ] contranstive loss
-- [ ] triplet loss
+
 
 ## Reference
 [margin-softmax](https://github.com/bojone/margin-softmax) 
