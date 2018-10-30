@@ -21,6 +21,9 @@ Keras implementation of various softmax function
 ```
 loss_name = 'AM-softmax'
 ```
+
+## Mnist Visualization
+
 ## To do
 
 - [x] original softmax
