@@ -24,8 +24,13 @@ loss_name = 'AM-softmax'
 
 ## Mnist Visualization
 # original softmax
-![original-softmax](https://github.com/LCorleone/Various_softmax_by_Keras/tree/master/gif/softmax.gif)
-
+![original-softmax](https://github.com/LCorleone/Various_softmax_by_Keras/blob/master/gif/softmax.gif)
+# center-loss
+![center-loss](https://github.com/LCorleone/Various_softmax_by_Keras/blob/master/gif/center-loss.gif)
+# A-softmax
+![A-softmax](https://github.com/LCorleone/Various_softmax_by_Keras/blob/master/gif/A-softmax.gif)
+# AM-softmax
+![AM-softmax](https://github.com/LCorleone/Various_softmax_by_Keras/blob/master/gif/AM-softmax.gif)
 ## To do
 
 - [x] original softmax
