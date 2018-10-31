@@ -1,0 +1,6 @@
+softmax
+softmax+contranstive
+L-softmax
+center loss
+AM-softmax
+Arcface
