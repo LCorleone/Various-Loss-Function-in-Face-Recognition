@@ -14,7 +14,7 @@ from utils_func import build_net, Histories, Dense_with_Center_loss
 
 
 # set GPU usage
-os.environ["CUDA_VISIBLE_DEVICES"] = "1"
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 config = tf.ConfigProto()
 config.gpu_options.allow_growth = True
 session = tf.Session(config=config)
