@@ -136,14 +136,11 @@ class Dense_with_Center_loss(Layer):
         center_loss = K.sum(K.square(centers - self.inputs), axis=1)  # center loss
         return crossentropy + lamb * center_loss
 
-<<<<<<< HEAD
     def get_config(self):
         config = {'output_dim': self.output_dim}
         base_config = super(Dense_with_Center_loss, self).get_config()
         return dict(list(base_config.items()) + list(config.items()))
 
-=======
->>>>>>> fa56f7ab0382034573c44149d1e0ae0309eb1feb
 
 def sparse_amsoftmax_loss(y_true, y_pred, scale=24, margin=0.2):
     y_true = K.expand_dims(y_true[:, 0], 1)  # shape=(None, 1)
@@ -155,7 +152,6 @@ def sparse_amsoftmax_loss(y_true, y_pred, scale=24, margin=0.2):
     t = K.tf.scatter_nd(ordinal_y, sel_logits * 0 + (-margin), K.tf.shape(y_pred))
     comb_logits_diff = K.tf.add(y_pred, t)
     return K.sparse_categorical_crossentropy(y_true, scale * comb_logits_diff, from_logits=True)
-
 
 
 class Dense_with_Asoftmax_loss(Layer):
@@ -210,14 +206,11 @@ class Dense_with_Asoftmax_loss(Layer):
             comb_logits_diff = K.tf.add(self.logits, K.tf.scatter_nd(ordinal_y, K.tf.subtract(scaled_logits, sel_logits), K.tf.to_int32(K.tf.shape(self.logits))))
             return K.sparse_categorical_crossentropy(y_true, comb_logits_diff, from_logits=True)
 
-<<<<<<< HEAD
     def get_config(self):
         config = {'output_dim': self.output_dim,
                   'm': self.m}
         base_config = super(Dense_with_Asoftmax_loss, self).get_config()
         return dict(list(base_config.items()) + list(config.items()))
-=======
->>>>>>> fa56f7ab0382034573c44149d1e0ae0309eb1feb
 
 
 class Dense_with_AMsoftmax_loss(Layer):
@@ -261,7 +254,6 @@ class Dense_with_AMsoftmax_loss(Layer):
         comb_logits_diff = K.tf.add(self.logits, K.tf.scatter_nd(ordinal_y, sel_logits - self.m - sel_logits, K.tf.to_int32(K.tf.shape(self.logits))))
         return K.sparse_categorical_crossentropy(y_true, self.scale * comb_logits_diff, from_logits=True)
 
-<<<<<<< HEAD
     def get_config(self):
         config = {'output_dim': self.output_dim,
                   'm': self.m,
@@ -269,8 +261,6 @@ class Dense_with_AMsoftmax_loss(Layer):
         base_config = super(Dense_with_AMsoftmax_loss, self).get_config()
         return dict(list(base_config.items()) + list(config.items()))
 
-=======
->>>>>>> fa56f7ab0382034573c44149d1e0ae0309eb1feb
 
 def build_net(nn_input_shape=(28, 28, 1), num_classes=10, loss='softmax'):
     nn_inputs = Input(shape=nn_input_shape)
