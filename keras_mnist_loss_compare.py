@@ -57,6 +57,7 @@ print('test samples: {}'.format(x_test.shape[0]))
 print(y_train.shape)
 
 
+
 def step_decay(epoch):
     if epoch % 5 == 0 and epoch != 0:
         lr = K.get_value(model.optimizer.lr)
