@@ -18,6 +18,7 @@ session = tf.Session(config=config)
 KTF.set_session(session)
 
 
+
 # set training params
 batch_size = 128
 num_classes = 10
