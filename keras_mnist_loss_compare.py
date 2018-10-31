@@ -10,7 +10,11 @@ sys.path.append('./utils')
 from utils_func import build_net, Histories
 
 # set GPU usage
+<<<<<<< HEAD
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+=======
+os.environ["CUDA_VISIBLE_DEVICES"] = "1"
+>>>>>>> fa56f7ab0382034573c44149d1e0ae0309eb1feb
 config = tf.ConfigProto()
 config.gpu_options.allow_growth = True
 session = tf.Session(config=config)
@@ -61,7 +65,11 @@ def step_decay(epoch):
     return K.get_value(model.optimizer.lr)
 
 
+<<<<<<< HEAD
 loss_name = 'center-loss'
+=======
+loss_name = 'AM-softmax'
+>>>>>>> fa56f7ab0382034573c44149d1e0ae0309eb1feb
 model = build_net(loss=loss_name)
 model.summary()
 # when not using softmax loss, the acc returned by keras is inaccurate, so using val_loss
