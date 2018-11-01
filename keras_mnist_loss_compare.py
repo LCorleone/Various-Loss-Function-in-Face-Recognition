@@ -11,7 +11,6 @@ from utils_func import build_net, Histories, callback_annealing
 
 # set GPU usage
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
-os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 config = tf.ConfigProto()
 config.gpu_options.allow_growth = True
 session = tf.Session(config=config)

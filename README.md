@@ -37,7 +37,7 @@ loss_name = 'AM-softmax'
 - [x] center loss
 - [x] A-softmax
 - [x] AM-softmax
-- [ ] L-GM loss
+- [ ] AAM-softmax(ArcFace)
 
 
 ## Reference
