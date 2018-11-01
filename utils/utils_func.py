@@ -99,6 +99,24 @@ def visualize(feat, labels, epoch, loss, path):
     plt.savefig(path + '/' + loss + '_epoch=%d.jpg' % epoch)
 
 
+class callback_annealing(keras.callbacks.Callback):
+    def __init__(self, annealing_lambda):
+        self.annealing_lambda = annealing_lambda
+
+    def on_epoch_end(self, epoch, logs={}):
+        if epoch < 10:
+            K.set_value(self.annealing_lambda, 100.0)
+        elif epoch < 20:
+            K.set_value(self.annealing_lambda, 50.0)
+        elif epoch < 30:
+            K.set_value(self.annealing_lambda, 20.0)
+        elif epoch < 40:
+            K.set_value(self.annealing_lambda, 10.0)
+        else:
+            K.set_value(self.annealing_lambda, 5.0)
+        print('changing annealing_lambda to {}'.format(K.eval(self.annealing_lambda)))
+
+
 class Dense_with_Center_loss(Layer):
 
     def __init__(self, output_dim, **kwargs):
@@ -156,9 +174,10 @@ def sparse_amsoftmax_loss(y_true, y_pred, scale=24, margin=0.2):
 
 class Dense_with_Asoftmax_loss(Layer):
 
-    def __init__(self, output_dim, m, **kwargs):
+    def __init__(self, output_dim, m, annealing_lambda, **kwargs):
         self.output_dim = output_dim
         self.m = m
+        self.annealing_lambda = annealing_lambda
         super(Dense_with_Asoftmax_loss, self).__init__(**kwargs)
 
     def build(self, input_shape):
@@ -203,8 +222,11 @@ class Dense_with_Asoftmax_loss(Layer):
             else:
                 raise ValueError('unsupported value of m')
             scaled_logits = K.tf.multiply(res, self.x_norm)
+            f = 1.0 / (1.0 + self.annealing_lambda)
+            ff = 1.0 - f
             comb_logits_diff = K.tf.add(self.logits, K.tf.scatter_nd(ordinal_y, K.tf.subtract(scaled_logits, sel_logits), K.tf.to_int32(K.tf.shape(self.logits))))
-            return K.sparse_categorical_crossentropy(y_true, comb_logits_diff, from_logits=True)
+            updated_logits = ff * self.logits + f * comb_logits_diff
+            return K.sparse_categorical_crossentropy(y_true, updated_logits, from_logits=True)
 
     def get_config(self):
         config = {'output_dim': self.output_dim,
@@ -291,12 +313,13 @@ def build_net(nn_input_shape=(28, 28, 1), num_classes=10, loss='softmax'):
         model.compile(loss=center_logits.loss, optimizer='Adam', metrics=['sparse_categorical_crossentropy'])
         return model
     elif loss == 'A-softmax':
-        # different from am-softmax is no norm feature
-        A_softmax_logits = Dense_with_Asoftmax_loss(num_classes, m=4)
+        # different from am-softmax is no norm feature, using annealing optimization strategy
+        annealing_lambda = K.variable(500.0)
+        A_softmax_logits = Dense_with_Asoftmax_loss(num_classes, m=4, annealing_lambda=annealing_lambda)
         out = A_softmax_logits(feature_embedding)
         model = Model(inputs=nn_inputs, outputs=out)
         model.compile(loss=A_softmax_logits.loss, optimizer='Adam', metrics=['sparse_categorical_crossentropy'])
-        return model
+        return model, annealing_lambda
     elif loss == 'AM-softmax':
         AM_softmax_logits = Dense_with_AMsoftmax_loss(num_classes, m=0.2, scale=24)
         out = AM_softmax_logits(feature_embedding)

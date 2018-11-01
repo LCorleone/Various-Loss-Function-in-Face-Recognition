@@ -7,7 +7,7 @@ from keras import backend as K
 from keras.callbacks import LearningRateScheduler
 import sys
 sys.path.append('./utils')
-from utils_func import build_net, Histories
+from utils_func import build_net, Histories, callback_annealing
 
 # set GPU usage
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
@@ -63,11 +63,17 @@ def step_decay(epoch):
     return K.get_value(model.optimizer.lr)
 
 
-loss_name = 'center-loss'
-loss_name = 'AM-softmax'
-model = build_net(loss=loss_name)
-model.summary()
-# when not using softmax loss, the acc returned by keras is inaccurate, so using val_loss
-histories = Histories(loss=loss_name, monitor='val_loss')
-lrate = LearningRateScheduler(step_decay)
-model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, verbose=1, validation_data=(x_test, y_test), callbacks=[histories])
+loss_name = 'A-softmax'
+if loss_name == 'A-softmax':
+    model, annealing_lambda = build_net(loss=loss_name)
+    model.summary()
+    histories = Histories(loss=loss_name, monitor='val_loss')
+    lrate = LearningRateScheduler(step_decay)
+    model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, verbose=1, validation_data=(x_test, y_test), callbacks=[histories, callback_annealing(annealing_lambda)])
+else:
+    model = build_net(loss=loss_name)
+    model.summary()
+    # when not using softmax loss, the acc returned by keras is inaccurate, so using val_loss
+    histories = Histories(loss=loss_name, monitor='val_loss')
+    lrate = LearningRateScheduler(step_decay)
+    model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, verbose=1, validation_data=(x_test, y_test), callbacks=[histories])
